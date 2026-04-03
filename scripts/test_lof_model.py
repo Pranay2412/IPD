@@ -1,0 +1,1 @@
+# LOF model test script
