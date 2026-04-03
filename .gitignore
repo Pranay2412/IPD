@@ -1,0 +1,5 @@
+*.log
+*.csv
+__pycache__/
+README.md
+Addressing Limitations of Existing.txt
