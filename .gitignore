@@ -3,3 +3,5 @@
 __pycache__/
 README.md
 Addressing Limitations of Existing.txt
+.venv/
+venv/

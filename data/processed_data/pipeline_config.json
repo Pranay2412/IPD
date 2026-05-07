@@ -1,0 +1,60 @@
+{
+  "data_sources": {
+    "kafka": {
+      "bootstrap_servers": "localhost:9092",
+      "topics": [
+        "cert-logon",
+        "cert-file",
+        "cert-email",
+        "cert-device",
+        "cert-http"
+      ],
+      "consumer_group": "cert-insider-threat-detection"
+    },
+    "file_watch": {
+      "directories": [
+        "/var/log/cert/",
+        "/data/cert_feeds/"
+      ],
+      "file_patterns": [
+        "*.csv",
+        "*.json",
+        "*.log"
+      ]
+    }
+  },
+  "processing": {
+    "batch_size": 1000,
+    "flush_interval_seconds": 30,
+    "max_buffer_size": 10000,
+    "worker_threads": 4,
+    "quality_thresholds": {
+      "missing_data": 0.1,
+      "duplicates": 0.05,
+      "timestamp_validity": 0.95
+    }
+  },
+  "output": {
+    "formats": [
+      "parquet",
+      "csv",
+      "json"
+    ],
+    "destinations": {
+      "local": "/data/processed/cert/",
+      "s3": "s3://insider-threat-data/cert/",
+      "database": {
+        "connection_string": "postgresql://user:pass@localhost/insider_threat",
+        "table": "cert_events"
+      }
+    }
+  },
+  "monitoring": {
+    "metrics_interval": 60,
+    "log_level": "INFO",
+    "alerts": {
+      "quality_score_threshold": 0.8,
+      "processing_lag_threshold": 300
+    }
+  }
+}
